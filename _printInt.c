@@ -11,6 +11,8 @@ int print_int(va_list arg)
 	d = -d;
 	}
 
+	//incompleto
+
 
 
 
