@@ -27,8 +27,10 @@ int _printf(const char *format, ...)
 				count += print_string(args);
 			else if (format[i] == 'd' || format[i] == 'i')
 				count += print_int(args);
-			else
-				return (-1);
+			else {
+				count += write(1, "%", 1);
+				count += write(1, &format[i], 1);
+			}
 		}
 		else
 			count += write(1, &format[i], 1);
