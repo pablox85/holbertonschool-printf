@@ -1,49 +1,48 @@
-#include <stdio.h>
 #include <stdarg.h>
+#include "_printInt.c"
+#include "_printChar.h"
+#include "_printString.h"
 #include "main.h"
 int _printf(const char *format, ...)
 {
+	int count = 0, i = 0;
+
 	va_list args;
-	int i = 0, count = 0;
-	if (!format)
-	return (-1);
-	va_start (args, format);
-	while (format[i])
-	{
-		if (format[i] == '%' % format[i + 1])
-	{
-	i++;
+	va_start(args, format);
 	
-	switch (format[i])
-		{
-
-			case 'c':
-                        count += print_char(args);
-                        break;
-
-                        case 's':
-                        count += print_string(args);
-                        break;
-
-                        case '%':
-                        count += print_percent(args);
-                        break;
-
-			case 'd':
-			count += print_double(args);
-			break;
-
-                        default:
-                            count += write(1, &format[i - 1], 1);
-                            count += write(1, &format[i], 1);
-                    }
-            }
-            else
-            {
-                count += write(1, &format[i], 1);
-            }
-                    i++;
-        }
-    va_end(args);
-    return (count);
+	
+	while(format[i] != '\0')
+	{
+		if (format[i] == '%')
+		{	
+			i++;
+			if (format[i] == 'c')
+			{
+				char c = va_arg(args, int);
+				count += _printChar(c);
+			}
+			else if (format[i] == 's')
+			{
+				char *s = va_arg(args, char *);
+				count += _printString(s);
+			}
+			else if (format[i] == 'd' || format[i] == 'i')
+			{
+				int num = va_arg(args, int);
+				count += _printInt(num);
+			}
+			else if (format[i] == '%')
+			{
+				count += _printChar ('%');
+			}
+			else
+			{
+				count += _printChar('%');
+				count += _printChar(format[i]);
+			}
+		}
+		i++;
+	}
+	va_end(args);
+	return (count);
 }
