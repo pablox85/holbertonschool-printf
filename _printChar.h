@@ -3,6 +3,8 @@
 
 int print_char (va_list arg)
 {
-	char c = va_arg(arg, int);
+	char c = va_arg(args, int);
 	return (write(1, &c, 1));
 }
+
+

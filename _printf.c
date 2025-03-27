@@ -1,13 +1,10 @@
 #include <stdarg.h>
-#include "_printInt.c"
-#include "_printChar.h"
-#include "_printString.h"
 #include "main.h"
 int _printf(const char *format, ...)
 {
 	int count = 0, i = 0;
 
-	va_list args;
+va_list args;
 	va_start(args, format);
 	
 	
@@ -18,27 +15,24 @@ int _printf(const char *format, ...)
 			i++;
 			if (format[i] == 'c')
 			{
-				char c = va_arg(args, int);
-				count += _printChar(c);
-			}
-			else if (format[i] == 's')
-			{
-				char *s = va_arg(args, char *);
-				count += _printString(s);
-			}
-			else if (format[i] == 'd' || format[i] == 'i')
-			{
-				int num = va_arg(args, int);
-				count += _printInt(num);
+				count += _printChar(args);
 			}
 			else if (format[i] == '%')
 			{
-				count += _printChar ('%');
+				count += write(1, '%', 1);
+			}
+			else if (format[i] == 's')
+			{
+				count += _printString(args);
+			}
+			else if (format[i] == 'd' || format[i] == 'i')
+			{
+				count += _printInt(args);
 			}
 			else
 			{
-				count += _printChar('%');
-				count += _printChar(format[i]);
+				count += write(1, '%',1);
+				count += write(1, &format[i,1]);
 			}
 		}
 		i++;
